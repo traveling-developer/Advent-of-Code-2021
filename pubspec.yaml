@@ -1,0 +1,22 @@
+name: adventofcode2021
+description: Solutions to the advent of code 2021
+version: 0.1.0
+homepage: https://github.com/traveling-developer/Advent-of-Code-2021
+repository: https://github.com/traveling-developer/Advent-of-Code-2021
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  http: ^0.13.4
+  tuple: ^2.0.0
+  vector_math: ^2.1.1
+  petitparser: ^4.4.0
+  uuid: ^3.0.5
+  collection: ^1.15.0
+  trotter: ^2.0.0-dev.1
+
+dev_dependencies:
+  lints: ^1.0.1
+  test: ^1.19.4
+  mockito: ^5.0.16
