@@ -1,5 +1,5 @@
 abstract class Day {
-  Future<String> firstPuzzle(String puzzelInput);
+  String solveFirstPuzzle(String puzzleInput);
 
-  Future<String> secondPuzzle(String puzzelInput);
+  String solveSecondPuzzle(String puzzleInput);
 }
