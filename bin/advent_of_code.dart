@@ -1,6 +1,6 @@
 import 'package:adventofcode2021/src/advent_of_code_api.dart';
+import 'package:adventofcode2021/src/day01.dart';
 import 'package:adventofcode2021/src/day02.dart';
-import 'package:adventofcode2021/src/day1.dart';
 
 Future<void> main(List<String> args) async {
   final adventOfCode = AdventOfCode(args[0]);

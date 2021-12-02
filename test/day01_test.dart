@@ -1,4 +1,4 @@
-import 'package:adventofcode2021/src/day1.dart';
+import 'package:adventofcode2021/src/day01.dart';
 import 'package:test/test.dart';
 
 void main() {

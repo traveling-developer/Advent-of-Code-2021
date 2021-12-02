@@ -14,25 +14,38 @@ class Day1 implements Day {
   String solveSecondPuzzle(String puzzleInput) {
     final parsedInput = parseInput(puzzleInput);
 
-    List<int> windowedList = generateWindowedList(parsedInput);
+    List<int> windowedList = createWindowedList(parsedInput);
 
     int counter = countIncreases(windowedList);
 
     return counter.toString();
   }
 
+  List<int> createWindowedList(List<int> parsedInput) {
+    List<int> windowedList = [];
+
+    for (var i = 0; i < parsedInput.length; i++) {
+      if (i + 2 == parsedInput.length) {
+        break;
+      }
+      var windowSum = parsedInput[i] + parsedInput[i + 1] + parsedInput[i + 2];
+      windowedList.add(windowSum);
+    }
+    return windowedList;
+  }
+
   List<int> parseInput(String puzzleInput) {
-    final list = puzzleInput
+    final parsedInput = puzzleInput
         .split('\n')
         .where((element) => element.isNotEmpty)
         .map((e) => int.parse(e))
         .toList();
 
-    return list;
+    return parsedInput;
   }
 
   int countIncreases(List<int> list) {
-    var counter = 0;
+    int counter = 0;
 
     for (var i = 0; i < list.length; i++) {
       if (i + 1 == list.length) {
@@ -44,19 +57,5 @@ class Day1 implements Day {
     }
 
     return counter;
-  }
-
-  List<int> generateWindowedList(List<int> list) {
-    List<int> windowedList = [];
-
-    for (var i = 0; i < list.length; i++) {
-      if (i + 2 == list.length) {
-        break;
-      }
-      var sum = list[i] + list[i + 1] + list[i + 2];
-      windowedList.add(sum);
-    }
-
-    return windowedList;
   }
 }
