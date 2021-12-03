@@ -2,6 +2,9 @@ import 'package:adventofcode2021/src/day.dart';
 
 class Day1 implements Day {
   @override
+  int get dayNumber => 1;
+
+  @override
   String solveFirstPuzzle(String puzzleInput) {
     final parsedInput = parseInput(puzzleInput);
 

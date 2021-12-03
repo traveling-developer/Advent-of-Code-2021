@@ -1,6 +1,9 @@
 import 'package:adventofcode2021/src/day.dart';
 
 class Day2 implements Day {
+  @override
+  int get dayNumber => 2;
+
   final String forward = 'forward';
   final String down = 'down';
   final String up = 'up';
