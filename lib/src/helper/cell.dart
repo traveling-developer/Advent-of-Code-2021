@@ -3,7 +3,7 @@ import 'package:quiver/core.dart';
 class Cell<T> {
   final int x;
   final int y;
-  late final T value;
+  late T value;
 
   Cell(this.x, this.y, this.value);
 

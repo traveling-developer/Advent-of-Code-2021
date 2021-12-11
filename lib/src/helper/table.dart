@@ -1,17 +1,20 @@
 import 'cell.dart';
 
 class Table<T> {
-  Iterable<Iterable<T>> rows;
+  final Iterable<Iterable<T>> _rows;
+  List<List<Cell<T>>> cells = [];
 
-  Table(this.rows) {
-    if (rows.isEmpty) {
-      throw ArgumentError.value(rows);
+  Table(this._rows) {
+    if (_rows.isEmpty) {
+      throw ArgumentError.value(_rows);
     }
+
+    _initializeCells();
   }
 
-  int get rowLength => rows.length;
+  int get rowLength => _rows.length;
 
-  int get columnsLength => rows.first.length;
+  int get columnsLength => _rows.first.length;
 
   List<List<T>> getColumns() {
     List<List<T>> columns = [];
@@ -20,7 +23,7 @@ class Table<T> {
       List<T> column = [];
 
       for (var j = 0; j < rowLength; j++) {
-        column.add(rows.elementAt(j).elementAt(i));
+        column.add(_rows.elementAt(j).elementAt(i));
       }
 
       columns.add(column);
@@ -32,7 +35,7 @@ class Table<T> {
   T getValue(int rowIndex, int columnIndex) {
     if (_isValidRowIndex(rowIndex)) {
       if (_isValidColumnIndex(columnIndex)) {
-        return rows.elementAt(rowIndex).elementAt(columnIndex);
+        return cells.elementAt(rowIndex).elementAt(columnIndex).value;
       }
       throw ArgumentError.value(columnIndex);
     }
@@ -43,13 +46,39 @@ class Table<T> {
     return getNeighbours(cell.y, cell.x);
   }
 
-  List<Cell<T>> getNeighbours(int rowIndex, int columnIndex) {
+  List<Cell<T>> getVerticalNeighbours(int rowIndex, int columnIndex) {
     List<Cell<T>> neighbourCells = [];
 
-    _addIfExists(rowIndex - 1, columnIndex, neighbourCells);
-    _addIfExists(rowIndex + 1, columnIndex, neighbourCells);
-    _addIfExists(rowIndex, columnIndex - 1, neighbourCells);
-    _addIfExists(rowIndex, columnIndex + 1, neighbourCells);
+    _addToListIfExists(rowIndex, columnIndex - 1, neighbourCells);
+    _addToListIfExists(rowIndex, columnIndex + 1, neighbourCells);
+
+    return neighbourCells;
+  }
+
+  List<Cell<T>> getHorizontalNeighbours(int rowIndex, int columnIndex) {
+    List<Cell<T>> neighbourCells = [];
+
+    _addToListIfExists(rowIndex - 1, columnIndex, neighbourCells);
+    _addToListIfExists(rowIndex + 1, columnIndex, neighbourCells);
+
+    return neighbourCells;
+  }
+
+  List<Cell<T>> getNeighbours(int rowIndex, int columnIndex) {
+    List<Cell<T>> neighbourCells = getVerticalNeighbours(rowIndex, columnIndex);
+
+    neighbourCells.addAll(getHorizontalNeighbours(rowIndex, columnIndex));
+
+    return neighbourCells;
+  }
+
+  List<Cell<T>> getAllNeighbours(int rowIndex, int columnIndex) {
+    List<Cell<T>> neighbourCells = getNeighbours(rowIndex, columnIndex);
+
+    _addToListIfExists(rowIndex - 1, columnIndex - 1, neighbourCells);
+    _addToListIfExists(rowIndex - 1, columnIndex + 1, neighbourCells);
+    _addToListIfExists(rowIndex + 1, columnIndex - 1, neighbourCells);
+    _addToListIfExists(rowIndex + 1, columnIndex + 1, neighbourCells);
 
     return neighbourCells;
   }
@@ -57,8 +86,18 @@ class Table<T> {
   Iterable<Cell<T>> asIterableCells() sync* {
     for (var i = 0; i < rowLength; i++) {
       for (var j = 0; j < columnsLength; j++) {
-        yield Cell(j, i, rows.elementAt(i).elementAt(j));
+        yield cells.elementAt(i).elementAt(j);
       }
+    }
+  }
+
+  void _initializeCells() {
+    for (var i = 0; i < rowLength; i++) {
+      List<Cell<T>> row = [];
+      for (var j = 0; j < columnsLength; j++) {
+        row.add(Cell(j, i, _rows.elementAt(i).elementAt(j)));
+      }
+      cells.add(row);
     }
   }
 
@@ -70,9 +109,9 @@ class Table<T> {
     return index >= 0 && index < columnsLength;
   }
 
-  void _addIfExists(int rowIndex, int columnIndex, List<Cell<T>> list) {
+  void _addToListIfExists(int rowIndex, int columnIndex, List<Cell<T>> list) {
     if (_isValidRowIndex(rowIndex) && _isValidColumnIndex(columnIndex)) {
-      list.add(Cell(columnIndex, rowIndex, rows.elementAt(rowIndex).elementAt(columnIndex)));
+      list.add(cells.elementAt(rowIndex).elementAt(columnIndex));
     }
   }
 }
