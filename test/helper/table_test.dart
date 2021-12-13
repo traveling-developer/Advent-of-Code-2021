@@ -116,7 +116,7 @@ void main() {
 
       var iterable = table.getNeighbours(1, 0);
 
-      expect(iterable, equals([Cell(0, 0, 1), Cell(1, 1, 4)]));
+      expect(iterable, equals([Cell(1, 1, 4), Cell(0, 0, 1)]));
     });
 
     test('asIterableCells - simple table - returns cells', () {
@@ -128,6 +128,31 @@ void main() {
       var iterable = table.asIterableCells().toList();
 
       expect(iterable, equals([Cell(0, 0, 1), Cell(1, 0, 2), Cell(0, 1, 3), Cell(1, 1, 4)]));
+    });
+
+    test('splitHorizontal - simple table - returns splitted tables', () {
+      final table = Table([
+        [1, 2],
+        [3, 4],
+        [5, 6]
+      ]);
+
+      var iterable = table.splitHorizontal(1);
+
+      expect(iterable.first.asIterableCells(), equals([Cell(0, 0, 1), Cell(1, 0, 2)]));
+      expect(iterable.last.asIterableCells(), equals([Cell(0, 0, 5), Cell(1, 0, 6)]));
+    });
+
+    test('splitVertical - simple table - returns splitted tables', () {
+      final table = Table([
+        [1, 2, 3],
+        [4, 5, 6]
+      ]);
+
+      var iterable = table.splitVertical(1);
+
+      expect(iterable.first.asIterableCells(), equals([Cell(0, 0, 1), Cell(0, 1, 4)]));
+      expect(iterable.last.asIterableCells(), equals([Cell(0, 0, 3), Cell(0, 1, 6)]));
     });
   });
 }
